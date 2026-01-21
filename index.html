@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essay Evaluation System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .score-excellent {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .score-good {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .score-average {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .score-poor {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">EssayEval Pro</h1>
+            <div id="navAuth" class="hidden">
+                <span id="loggedInUser" class="mr-4 text-gray-700"></span>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6 max-w-6xl">
+
+        <!-- Login/Register Section -->
+        <div id="authSection" class="max-w-md mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex mb-6">
+                    <button id="loginTab" onclick="switchTab('login')"
+                        class="flex-1 py-2 px-4 text-center font-semibold border-b-2 border-blue-500 text-blue-500">
+                        Login
+                    </button>
+                    <button id="registerTab" onclick="switchTab('register')"
+                        class="flex-1 py-2 px-4 text-center font-semibold border-b-2 border-gray-200 text-gray-500">
+                        Register
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Username</label>
+                        <input type="text" id="loginUsername" required
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" id="loginPassword" required
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">
+                        Login
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" onsubmit="handleRegister(event)" class="hidden">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Username</label>
+                        <input type="text" id="regUsername" required
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" id="regPassword" required
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" required
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition">
+                        Register
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="hidden">
+
+            <!-- Essay Input Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Submit Essay for Evaluation</h2>
+                <form onsubmit="evaluateEssay(event)">
+                    <div class="mb-4">
+                        <textarea id="essayInput" placeholder="Paste your essay here..." rows="10" required
+                            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">Artificial Intelligence (AI) stands at the forefront of technological progress, profoundly influencing how societies function, economies expand, and individuals interact with the world. Its rapid integration across sectors such as healthcare, education, finance, and transportation has unlocked unprecedented efficiencies and capabilities. However, while AI offers transformative benefits, it also introduces complex ethical, social, and economic challenges that must be proactively managed to ensure responsible and sustainable development.
+
+One of AI’s most significant strengths lies in its ability to analyze vast datasets with speed and precision far beyond human capability. In healthcare, AI-assisted diagnostic systems enable earlier disease detection, personalized treatment plans, and reduced human error, directly improving patient outcomes. In finance and supply chain management, predictive algorithms enhance fraud detection, optimize logistics, and improve risk assessment. By automating repetitive and time-consuming tasks, AI allows professionals to focus on strategic thinking, creativity, and innovation, thereby accelerating productivity and long-term growth.
+
+Despite these advantages, the rapid expansion of AI raises critical concerns that require deliberate mitigation strategies. Algorithmic bias remains a pressing issue, as AI systems trained on historical or incomplete data can reinforce existing social inequalities in hiring, credit scoring, and law enforcement. Addressing this challenge requires transparent model design, diverse training datasets, and regular bias audits. Additionally, automation poses risks to workforce stability, particularly for roles dependent on routine tasks. Governments and organizations must invest in large-scale reskilling programs, continuous education, and social safety nets to ensure that technological progress does not come at the cost of widespread economic displacement.
+
+Privacy, transparency, and accountability further complicate AI adoption. Many AI systems rely on extensive data collection, increasing the risk of surveillance and misuse of personal information. Implementing strong data protection laws, explainable AI models, and clear accountability mechanisms is essential to preserving individual autonomy and public trust. As AI systems gain greater autonomy, establishing legal and ethical frameworks that clearly define responsibility for their decisions becomes increasingly important.
+
+In conclusion, Artificial Intelligence represents both an extraordinary opportunity and a profound responsibility. When guided by ethical principles, robust regulation, and inclusive policy-making, AI can enhance human capabilities, promote economic resilience, and help address global challenges. Successfully balancing innovation with accountability will determine whether AI becomes a force for shared prosperity or a catalyst for deeper societal divides.</textarea>
+                    </div>
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
+                        Evaluate Essay
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Card -->
+            <div id="resultsCard" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden fade-in">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Evaluation Results</h2>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 mb-2">Your Score:</p>
+                        <div id="scoreCircle" class="score-circle score-good">
+                            <span id="scoreValue">8.33</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 ml-8">
+                        <h3 class="font-semibold text-gray-800 mb-2">Feedback:</h3>
+                        <p id="feedbackText" class="text-gray-700 bg-gray-100 p-4 rounded">
+                            Strong logical flow, clear benefits and risks, but could deepen analysis of mitigation
+                            strategies. Comprehensive coverage.
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            Evaluated on: <span id="evalDateTime"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Evaluation History</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-2 px-4">Date &amp; Time</th>
+                                <th class="text-left py-2 px-4">Score</th>
+                                <th class="text-left py-2 px-4">Feedback</th>
+                                <th class="text-left py-2 px-4">Essay Preview</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable">
+                            <!-- History rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] flex flex-col"
+            onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b px-6 py-4">
+                <h3 class="text-lg font-semibold text-gray-800">Evaluation Details</h3>
+                <button onclick="closeDetailModal()"
+                    class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+            </div>
+            <div class="px-6 py-4 space-y-4 overflow-y-auto">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <div class="text-sm text-gray-500">Date &amp; Time</div>
+                        <div id="detailDateTime" class="text-gray-800 font-medium"></div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Score</div>
+                        <div id="detailScore"
+                            class="inline-flex items-center justify-center px-3 py-1 rounded-full text-white text-sm font-semibold">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold text-gray-700 mb-1">Feedback</div>
+                    <div id="detailFeedback" class="text-gray-800 bg-gray-50 border rounded p-3 whitespace-pre-line">
+                    </div>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold text-gray-700 mb-1">Full Essay</div>
+                    <div id="detailEssay"
+                        class="text-gray-800 bg-gray-50 border rounded p-3 whitespace-pre-line max-h-60 overflow-y-auto">
+                    </div>
+                </div>
+            </div>
+            <div class="border-t px-6 py-3 flex justify-end">
+                <button onclick="closeDetailModal()"
+                    class="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 text-sm font-medium">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Safe JSON parse helper
+        function safeParseJSON(value, fallback) {
+            try {
+                if (!value) return fallback;
+                const parsed = JSON.parse(value);
+                return Array.isArray(parsed) ? parsed : fallback;
+            } catch (e) {
+                console.error('JSON parse error, resetting storage:', e);
+                return fallback;
+            }
+        }
+
+        // Initialize database
+        function initDatabase() {
+            const usersRaw = localStorage.getItem('essayEvalUsers');
+            const scoresRaw = localStorage.getItem('essayEvalScores');
+
+            const users = safeParseJSON(usersRaw, []);
+            const scores = safeParseJSON(scoresRaw, []);
+
+            localStorage.setItem('essayEvalUsers', JSON.stringify(users));
+            localStorage.setItem('essayEvalScores', JSON.stringify(scores));
+        }
+
+        // Check if user is logged in
+        function checkAuth() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (currentUser) {
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        }
+
+        // Show authentication section
+        function showAuth() {
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('navAuth').classList.add('hidden');
+        }
+
+        // Show dashboard section
+        function showDashboard() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('navAuth').classList.remove('hidden');
+            document.getElementById('loggedInUser').textContent = sessionStorage.getItem('currentUser');
+            loadHistory();
+        }
+
+        // Switch between login and register tabs
+        function switchTab(tab) {
+            if (tab === 'login') {
+                document.getElementById('loginTab').classList.add('border-blue-500', 'text-blue-500');
+                document.getElementById('loginTab').classList.remove('border-gray-200', 'text-gray-500');
+                document.getElementById('registerTab').classList.add('border-gray-200', 'text-gray-500');
+                document.getElementById('registerTab').classList.remove('border-blue-500', 'text-blue-500');
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+            } else {
+                document.getElementById('registerTab').classList.add('border-blue-500', 'text-blue-500');
+                document.getElementById('registerTab').classList.remove('border-gray-200', 'text-gray-500');
+                document.getElementById('loginTab').classList.add('border-gray-200', 'text-gray-500');
+                document.getElementById('loginTab').classList.remove('border-blue-500', 'text-blue-500');
+                document.getElementById('registerForm').classList.remove('hidden');
+                document.getElementById('loginForm').classList.add('hidden');
+            }
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const users = safeParseJSON(localStorage.getItem('essayEvalUsers'), []);
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                sessionStorage.setItem('currentUser', username);
+                document.getElementById('loginForm').reset();
+                showDashboard();
+            } else {
+                alert('Invalid username or password!');
+            }
+        }
+
+        // Handle register
+        function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (!username) {
+                alert('Username cannot be empty.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            const users = safeParseJSON(localStorage.getItem('essayEvalUsers'), []);
+            if (users.find(u => u.username === username)) {
+                alert('Username already exists!');
+                return;
+            }
+
+            users.push({ username, password });
+            localStorage.setItem('essayEvalUsers', JSON.stringify(users));
+
+            alert('Registration successful! Please login.');
+            document.getElementById('registerForm').reset();
+            switchTab('login');
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            showAuth();
+        }
+
+        // Test API connection (optional utility)
+        async function testApiConnection() {
+            try {
+                console.log('Testing API connection...');
+                const response = await fetch('https://essay-feedback-api-x2xr.onrender.com/evaluate', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ essay: 'Test' })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('API test successful:', data);
+                return true;
+            } catch (error) {
+                console.error('API test failed:', error);
+                return false;
+            }
+        }
+
+        // Evaluate essay using API with graceful fallback
+        async function evaluateEssay(event) {
+            event.preventDefault();
+            const essay = document.getElementById('essayInput').value.trim();
+
+            if (!essay) {
+                alert('Please enter an essay!');
+                return;
+            }
+
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('You must be logged in to evaluate an essay.');
+                showAuth();
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Evaluating...';
+            submitBtn.disabled = true;
+
+            // Helper to save and show result
+            function saveAndDisplay(scoreNumber, feedbackText, timestamp) {
+                const scores = safeParseJSON(localStorage.getItem('essayEvalScores'), []);
+
+                scores.push({
+                    username: currentUser,
+                    essay: essay.substring(0, 200) + (essay.length > 200 ? '...' : ''),
+                    fullEssay: essay,
+                    score: Number(scoreNumber.toFixed(2)),
+                    feedback: feedbackText,
+                    timestamp: timestamp.toISOString()
+                });
+
+                localStorage.setItem('essayEvalScores', JSON.stringify(scores));
+                displayResults(scoreNumber.toFixed(2), feedbackText, timestamp);
+            }
+
+            try {
+                console.log('='.repeat(50));
+                console.log('API REQUEST DETAILS:');
+                console.log('Endpoint: POST https://essay-feedback-api-x2xr.onrender.com/evaluate');
+                console.log('Essay length:', essay.length, 'characters');
+                console.log('Essay preview:', essay.substring(0, 100) + '...');
+                console.log('='.repeat(50));
+
+                const requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ essay: essay })
+                };
+
+                console.log('Request options:', requestOptions);
+
+                const response = await fetch('https://essay-feedback-api-x2xr.onrender.com/evaluate', requestOptions);
+
+                console.log('Response status:', response.status, response.statusText);
+                console.log('Response ok:', response.ok);
+                console.log('Response type:', response.type);
+                console.log('Response headers:', [...response.headers.entries()]);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response body:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                console.log('Content-Type:', contentType);
+
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    throw new Error(`Expected JSON but got: ${text.substring(0, 100)}`);
+                }
+
+                console.log('Parsed API Response:', data);
+
+                if (typeof data.final_score === 'undefined' || typeof data.feedback === 'undefined') {
+                    console.error('Missing required fields. Got:', Object.keys(data));
+                    throw new Error(`Invalid response format: missing 'final_score' or 'feedback'. Available fields: ${Object.keys(data).join(', ')}`);
+                }
+
+                const scoreNumber = Number(data.final_score);
+                const feedback = String(data.feedback);
+                const timestamp = new Date();
+
+                console.log('Extracted score:', scoreNumber);
+                console.log('Extracted feedback:', feedback);
+
+                saveAndDisplay(scoreNumber, feedback, timestamp);
+
+            } catch (error) {
+                console.error('='.repeat(50));
+                console.error('FULL ERROR DETAILS:');
+                console.error('Error name:', error.name);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
+                console.error('='.repeat(50));
+
+                // Offline / fallback scoring
+                const fallbackScoreRaw = Math.min(10, Math.max(4, essay.length / 200));
+                const fallbackScoreNumber = Number(fallbackScoreRaw.toFixed(2));
+                const fallbackFeedback = 'Offline evaluation (API unavailable): ' + generateFeedback(fallbackScoreNumber);
+                const timestamp = new Date();
+
+                saveAndDisplay(fallbackScoreNumber, fallbackFeedback, timestamp);
+
+                alert(`API Error: ${error.message}\n\nThe system has provided an approximate offline evaluation instead.\n\nTroubleshooting for API:\n1. Verify API server: https://essay-feedback-api-x2xr.onrender.com\n2. Check browser console (F12) for detailed logs\n3. Ensure CORS is enabled on your API server`);
+            } finally {
+                // Restore button state
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Generate feedback based on score
+        function generateFeedback(score) {
+            if (score >= 9) {
+                return 'Excellent analysis! Deep critical thinking with strong evidence and flawless structure.';
+            } else if (score >= 8) {
+                return 'Strong logical flow, clear benefits and risks, but could deepen analysis of mitigation strategies. Comprehensive coverage.';
+            } else if (score >= 7) {
+                return 'Good understanding of topic with adequate examples. Could improve argument depth and coherence.';
+            } else {
+                return 'Needs improvement in structure, analysis, and supporting evidence. Consider revising for clarity.';
+            }
+        }
+
+        // Display evaluation results
+        function displayResults(score, feedback, timestamp) {
+            const dateObj = timestamp instanceof Date ? timestamp : new Date(timestamp);
+
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('feedbackText').textContent = feedback;
+            document.getElementById('evalDateTime').textContent = dateObj.toLocaleString();
+
+            // Set score circle color
+            const numericScore = Number(score);
+            const scoreCircle = document.getElementById('scoreCircle');
+            scoreCircle.className = 'score-circle ';
+            if (numericScore >= 9) scoreCircle.className += 'score-excellent';
+            else if (numericScore >= 8) scoreCircle.className += 'score-good';
+            else if (numericScore >= 7) scoreCircle.className += 'score-average';
+            else scoreCircle.className += 'score-poor';
+
+            const resultsCard = document.getElementById('resultsCard');
+            resultsCard.classList.remove('hidden');
+
+            // Restart fade-in animation
+            resultsCard.classList.remove('fade-in');
+            // Force reflow
+            void resultsCard.offsetWidth;
+            resultsCard.classList.add('fade-in');
+
+            loadHistory();
+        }
+
+        // Load evaluation history
+        function loadHistory() {
+            const scores = safeParseJSON(localStorage.getItem('essayEvalScores'), []);
+            const currentUser = sessionStorage.getItem('currentUser');
+            const userScores = scores.filter(s => s.username === currentUser);
+
+            const historyTable = document.getElementById('historyTable');
+            historyTable.innerHTML = '';
+
+            if (!userScores.length) {
+                historyTable.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-gray-500">No evaluations yet</td></tr>';
+                return;
+            }
+
+            // Sort by timestamp (newest first)
+            userScores.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            userScores.forEach((entry) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+
+                const date = new Date(entry.timestamp);
+                const scoreColor = entry.score >= 9 ? 'text-green-600' : entry.score >= 8 ? 'text-blue-600' : entry.score >= 7 ? 'text-yellow-600' : 'text-red-600';
+
+                row.innerHTML = `
+                    <td class="py-3 px-4">${date.toLocaleString()}</td>
+                    <td class="py-3 px-4 font-semibold ${scoreColor}">${entry.score}</td>
+                    <td class="py-3 px-4 max-w-md truncate" title="${entry.feedback.replace(/"/g, '&quot;')}">${entry.feedback}</td>
+                    <td class="py-3 px-4 max-w-xs truncate" title="${entry.essay.replace(/"/g, '&quot;')}">${entry.essay}</td>
+                `;
+
+                // Add click to view full details
+                row.style.cursor = 'pointer';
+                row.onclick = () => openDetailModal(entry);
+
+                historyTable.appendChild(row);
+            });
+        }
+
+        // Open detail modal with full info
+        function openDetailModal(entry) {
+            const date = new Date(entry.timestamp);
+            const numericScore = Number(entry.score);
+
+            document.getElementById('detailDateTime').textContent = date.toLocaleString();
+
+            const detailScore = document.getElementById('detailScore');
+            detailScore.textContent = numericScore.toFixed(2);
+            detailScore.className = 'inline-flex items-center justify-center px-3 py-1 rounded-full text-white text-sm font-semibold ';
+            if (numericScore >= 9) detailScore.className += 'bg-emerald-500';
+            else if (numericScore >= 8) detailScore.className += 'bg-blue-500';
+            else if (numericScore >= 7) detailScore.className += 'bg-amber-500';
+            else detailScore.className += 'bg-red-500';
+
+            document.getElementById('detailFeedback').textContent = entry.feedback;
+            document.getElementById('detailEssay').textContent = entry.fullEssay;
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        // Close detail modal
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // Initialize app
+        initDatabase();
+        checkAuth();
+    </script>
+</body>
+
+</html>
